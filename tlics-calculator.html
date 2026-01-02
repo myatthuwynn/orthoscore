@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TLICS Score Calculator - Thoracolumbar Injury Classification and Severity">
+    <meta name="theme-color" content="#0e7490">
+    <title>TLICS Calculator</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRMSUNTIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlRMSUNTIiwKICAiZGVzY3JpcHRpb24iOiAiVGhvcmFjb2x1bWJhciBJbmp1cnkgQ2xhc3NpZmljYXRpb24gYW5kIFNldmVyaXR5IFNjb3JlIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjMGU3NDkwIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxOTInIGhlaWdodD0nMTkyJyB2aWV3Qm94PScwIDAgMTkyIDE5MiclM0UlM0NyZWN0IHdpZHRoPScxOTInIGhlaWdodD0nMTkyJyBmaWxsPSclMjMwZTc0OTAnLyUzRSUzQ3RleHQgeD0nNTAlMjUnIHk9JzUwJTI1JyBmb250LXNpemU9JzY0JyBmaWxsPSclMjNmZmZmZmYnIGZvbnQtZmFtaWx5PScnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFVCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyB2aWV3Qm94PScwIDAgNTEyIDUxMiclM0UlM0NyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyBmaWxsPSclMjMwZTc0OTAnLyUzRSUzQ3RleHQgeD0nNTAlMjUnIHk9JzUwJTI1JyBmb250LXNpemU9JzI1NicgZmlsbD0nJTIzZmZmZmZmJyBmb250LWZhbWlseT0nJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyUzRVQlM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0e7490;
+            --primary-dark: #155e75;
+            --primary-light: #06b6d4;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(14, 116, 144, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-number {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(14, 116, 144, 0.02);
+        }
+        
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"]:checked + .radio-content {
+            color: var(--primary);
+        }
+        
+        .radio-option input[type="radio"]:checked ~ .check-indicator {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .radio-option input[type="radio"]:checked ~ .check-indicator::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .radio-content {
+            flex: 1;
+            padding-left: 0.75rem;
+            transition: color 0.2s ease;
+        }
+        
+        .radio-label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .radio-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .points-badge {
+            background: var(--bg-primary);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        .check-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .check-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 116, 144, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 116, 144, 0.4);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(14, 116, 144, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-score {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .result-score-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+        }
+        
+        .result-score-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .result-interpretation {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-recommendation {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .result-details {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .result-breakdown {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .breakdown-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            font-size: 0.9375rem;
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: white;
+            color: var(--text-primary);
+            padding: 0.875rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+        
+        .status-nonop {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+        
+        .status-indeterminate {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-operative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reference {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(14, 116, 144, 0.05);
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TLICS Calculator</h1>
+            <p>Thoracolumbar Injury Classification and Severity Score</p>
+        </div>
+        
+        <form id="tlicsForm">
+            <!-- Morphology Section -->
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-number">1</span>
+                    Morphology (Injury Pattern)
+                </div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="morphology" value="0" required>
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">No abnormality</span>
+                            <span class="radio-description">Normal imaging</span>
+                        </div>
+                        <span class="points-badge">0 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="morphology" value="1">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Compression</span>
+                            <span class="radio-description">Anterior column failure only</span>
+                        </div>
+                        <span class="points-badge">1 pt</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="morphology" value="2">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Burst</span>
+                            <span class="radio-description">Anterior and posterior column failure</span>
+                        </div>
+                        <span class="points-badge">2 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="morphology" value="3">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Translational/Rotational</span>
+                            <span class="radio-description">Facet dislocation, fracture-dislocation</span>
+                        </div>
+                        <span class="points-badge">3 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="morphology" value="4">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Distraction</span>
+                            <span class="radio-description">Flexion-distraction injury (Chance fracture)</span>
+                        </div>
+                        <span class="points-badge">4 pts</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- PLC Section -->
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-number">2</span>
+                    Posterior Ligamentous Complex (PLC)
+                </div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="plc" value="0" required>
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Intact</span>
+                            <span class="radio-description">No evidence of PLC injury on imaging</span>
+                        </div>
+                        <span class="points-badge">0 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="plc" value="2">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Suspected/Indeterminate</span>
+                            <span class="radio-description">MRI signal change, widened interspinous space</span>
+                        </div>
+                        <span class="points-badge">2 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="plc" value="3">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Injured</span>
+                            <span class="radio-description">Clear disruption on MRI or surgery</span>
+                        </div>
+                        <span class="points-badge">3 pts</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Neurologic Status Section -->
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-number">3</span>
+                    Neurologic Status
+                </div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="neuro" value="0" required>
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Intact</span>
+                            <span class="radio-description">No neurological deficit</span>
+                        </div>
+                        <span class="points-badge">0 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="neuro" value="2">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Nerve Root Injury</span>
+                            <span class="radio-description">Radicular symptoms</span>
+                        </div>
+                        <span class="points-badge">2 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="neuro" value="2">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Cord/Conus (Incomplete)</span>
+                            <span class="radio-description">Incomplete spinal cord injury</span>
+                        </div>
+                        <span class="points-badge">2 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="neuro" value="2">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Cord/Conus (Complete)</span>
+                            <span class="radio-description">Complete spinal cord injury</span>
+                        </div>
+                        <span class="points-badge">2 pts</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="neuro" value="3">
+                        <span class="check-indicator"></span>
+                        <div class="radio-content">
+                            <span class="radio-label">Cauda Equina</span>
+                            <span class="radio-description">Saddle anesthesia, bowel/bladder dysfunction</span>
+                        </div>
+                        <span class="points-badge">3 pts</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="calculate-btn">Calculate TLICS Score</button>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden">
+            <div class="result-card">
+                <div class="result-score">
+                    <div class="result-score-number" id="totalScore">0</div>
+                    <div class="result-score-label">Total TLICS Score</div>
+                </div>
+                
+                <div class="result-interpretation">
+                    <div class="result-recommendation" id="recommendation">
+                        <span id="statusBadge" class="status-badge"></span>
+                    </div>
+                    <div class="result-details" id="details"></div>
+                </div>
+                
+                <div class="result-breakdown">
+                    <div class="breakdown-title">Score Breakdown</div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Morphology</span>
+                        <span class="breakdown-value" id="morphologyPoints">0 pts</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">PLC Status</span>
+                        <span class="breakdown-value" id="plcPoints">0 pts</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Neurologic Status</span>
+                        <span class="breakdown-value" id="neuroPoints">0 pts</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="reset-btn" onclick="resetForm()">New Calculation</button>
+        </div>
+        
+        <div class="reference">
+            <div class="reference-title">Reference</div>
+            Vaccaro AR, et al. A new classification of thoracolumbar injuries: the importance of injury morphology, the integrity of the posterior ligamentous complex, and neurologic status. Spine (Phila Pa 1976). 2005;30(20):2325-2333.
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // Form handling
+        const form = document.getElementById('tlicsForm');
+        const resultSection = document.getElementById('resultSection');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateTLICS();
+        });
+        
+        function calculateTLICS() {
+            const morphology = parseInt(document.querySelector('input[name="morphology"]:checked').value);
+            const plc = parseInt(document.querySelector('input[name="plc"]:checked').value);
+            const neuro = parseInt(document.querySelector('input[name="neuro"]:checked').value);
+            
+            const totalScore = morphology + plc + neuro;
+            
+            // Update display
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('morphologyPoints').textContent = morphology + ' pt' + (morphology !== 1 ? 's' : '');
+            document.getElementById('plcPoints').textContent = plc + ' pt' + (plc !== 1 ? 's' : '');
+            document.getElementById('neuroPoints').textContent = neuro + ' pt' + (neuro !== 1 ? 's' : '');
+            
+            // Determine recommendation
+            let recommendation, details, statusClass, statusText;
+            
+            if (totalScore <= 3) {
+                statusClass = 'status-nonop';
+                statusText = 'Non-operative Management';
+                recommendation = statusText;
+                details = 'TLICS ≤3 suggests injury can be managed conservatively. Consider bracing, pain management, and early mobilization. Monitor for clinical deterioration.';
+            } else if (totalScore === 4) {
+                statusClass = 'status-indeterminate';
+                statusText = 'Clinical Judgment Required';
+                recommendation = statusText;
+                details = 'TLICS = 4 is indeterminate. Consider patient factors: kyphotic deformity, functional demands, pain severity, comorbidities. May benefit from surgical consultation.';
+            } else {
+                statusClass = 'status-operative';
+                statusText = 'Surgical Candidate';
+                recommendation = statusText;
+                details = 'TLICS ≥5 indicates significant instability. Consider surgical stabilization. Timing depends on neurologic status and general condition. Posterior instrumentation often required.';
+            }
+            
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.textContent = statusText;
+            statusBadge.className = 'status-badge ' + statusClass;
+            
+            document.getElementById('details').textContent = details;
+            
+            // Show results
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetForm() {
+            form.reset();
+            resultSection.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Install prompt for iOS
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+    </script>
+</body>
+</html>

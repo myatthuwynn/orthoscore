@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Schatzker Classification - Tibial Plateau Fracture Assessment">
+    <meta name="theme-color" content="#7c3aed">
+    <title>Schatzker Classification</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlNjaGF0emtlciBDbGFzc2lmaWNhdGlvbiIsCiAgInNob3J0X25hbWUiOiAiU2NoYXR6a2VyIiwKICAiZGVzY3JpcHRpb24iOiAiVGliaWFsIFBsYXRlYXUgRnJhY3R1cmUgQ2xhc3NpZmljYXRpb24iLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiM3YzNhZWQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIGZpbGw9JyUyMzdjM2FlZCcvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyUyM2ZmZmZmZicgZm9udC1mYW1pbHk9JycgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZScgdGV4dC1hbmNob3I9J21pZGRsZSclM0VTJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyUyMzdjM2FlZCcvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nMjU2JyBmaWxsPSclMjNmZmZmZmYnIGZvbnQtZmFtaWx5PScnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFUyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --primary-light: #8b5cf6;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(124, 58, 237, 0.02);
+        }
+        
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"]:checked {
+            & + .radio-header {
+                color: var(--primary);
+            }
+            & ~ .type-badge {
+                background: var(--primary);
+                color: white;
+            }
+            & ~ .radio-option {
+                border-color: var(--primary);
+            }
+        }
+        
+        .radio-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s ease;
+        }
+        
+        .radio-label {
+            font-weight: 600;
+            font-size: 1.0625rem;
+        }
+        
+        .type-badge {
+            background: var(--bg-primary);
+            color: var(--primary);
+            padding: 0.375rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .radio-description {
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .radio-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .meta-item {
+            font-size: 0.8125rem;
+        }
+        
+        .meta-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .meta-value {
+            color: var(--text-primary);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+        }
+        
+        .result-type {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-section-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        
+        .result-content {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+        
+        .info-item {
+            padding: 0.75rem;
+            background: rgba(124, 58, 237, 0.05);
+            border-radius: 8px;
+        }
+        
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9375rem;
+        }
+        
+        .treatment-list {
+            margin-top: 0.75rem;
+        }
+        
+        .treatment-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(124, 58, 237, 0.03);
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            font-size: 0.9375rem;
+        }
+        
+        .treatment-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .alert-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+        }
+        
+        .alert-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: white;
+            color: var(--text-primary);
+            padding: 0.875rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reference {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(124, 58, 237, 0.05);
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Schatzker Classification</h1>
+            <p>Tibial Plateau Fracture Assessment</p>
+        </div>
+        
+        <form id="schatzkerForm">
+            <div class="card">
+                <div class="section-title">
+                    Select the fracture type based on imaging:
+                </div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="1" required>
+                        <div class="radio-header">
+                            <span class="radio-label">Type I - Lateral Split</span>
+                            <span class="type-badge">I</span>
+                        </div>
+                        <div class="radio-description">
+                            Pure lateral wedge fracture without depression. Vertical split of lateral plateau.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">Valgus force, young patients</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">5-10%</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="2">
+                        <div class="radio-header">
+                            <span class="radio-label">Type II - Lateral Split-Depression</span>
+                            <span class="type-badge">II</span>
+                        </div>
+                        <div class="radio-description">
+                            Lateral wedge fracture with depression of adjacent articular surface. Most common type.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">Valgus + axial load</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">25-30%</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="3">
+                        <div class="radio-header">
+                            <span class="radio-label">Type III - Lateral Pure Depression</span>
+                            <span class="type-badge">III</span>
+                        </div>
+                        <div class="radio-description">
+                            Central or lateral pure depression without split component. Intact cortical rim.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">Axial load, older patients</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">10-15%</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="4">
+                        <div class="radio-header">
+                            <span class="radio-label">Type IV - Medial Plateau</span>
+                            <span class="type-badge">IV</span>
+                        </div>
+                        <div class="radio-description">
+                            Medial condyle fracture (split or depression). Often associated with ligament injury.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">Varus or axial force</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">10-15%</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="5">
+                        <div class="radio-header">
+                            <span class="radio-label">Type V - Bicondylar</span>
+                            <span class="type-badge">V</span>
+                        </div>
+                        <div class="radio-description">
+                            Both lateral and medial plateaus involved. Metaphysis intact. High-energy injury.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">High-energy axial load</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">20-25%</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="6">
+                        <div class="radio-header">
+                            <span class="radio-label">Type VI - Metaphyseal-Diaphyseal</span>
+                            <span class="type-badge">VI</span>
+                        </div>
+                        <div class="radio-description">
+                            Bicondylar with dissociation between metaphysis and diaphysis. Most severe injury.
+                        </div>
+                        <div class="radio-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Mechanism</span>
+                                <span class="meta-value">High-energy trauma</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Frequency</span>
+                                <span class="meta-value">10-15%</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="calculate-btn">Classify Fracture</button>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-type" id="resultType">Type I</div>
+                    <div class="result-name" id="resultName">Lateral Split Fracture</div>
+                    <div class="result-subtitle">Schatzker Classification</div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Fracture Characteristics</div>
+                    <div class="result-content" id="characteristics"></div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Energy Level</div>
+                            <div class="info-value" id="energyLevel"></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Prognosis</div>
+                            <div class="info-value" id="prognosis"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Treatment Approach</div>
+                    <div id="treatmentList" class="treatment-list"></div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Key Considerations</div>
+                    <div class="result-content" id="considerations"></div>
+                </div>
+                
+                <div id="alertBox" class="alert-box hidden">
+                    <div class="alert-title" id="alertTitle"></div>
+                    <div class="alert-content" id="alertContent"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="reset-btn" onclick="resetForm()">New Classification</button>
+        </div>
+        
+        <div class="reference">
+            <div class="reference-title">Reference</div>
+            Schatzker J, McBroom R, Bruce D. The tibial plateau fracture. The Toronto experience 1968-1975. Clin Orthop Relat Res. 1979;(138):94-104.
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // Classification data
+        const classifications = {
+            '1': {
+                type: 'Type I',
+                name: 'Lateral Split Fracture',
+                characteristics: 'Pure wedge fracture of lateral tibial plateau without articular depression. Usually a vertical split extending from the joint line. Minimal comminution.',
+                energyLevel: 'Low',
+                prognosis: 'Excellent',
+                treatments: [
+                    'Non-displaced (<2mm): Conservative with hinged knee brace, protected weight-bearing',
+                    'Displaced (>2mm): ORIF with lag screws or buttress plate',
+                    'Early ROM encouraged after stable fixation',
+                    'Full weight-bearing at 6-8 weeks post-op'
+                ],
+                considerations: 'Good bone quality typically. Check for meniscal tear (lateral). Assess ligamentous stability. CT often unnecessary if adequate plain films. Generally good outcomes with proper reduction.',
+                alert: false
+            },
+            '2': {
+                type: 'Type II',
+                name: 'Lateral Split-Depression',
+                characteristics: 'Combination of lateral wedge fracture with depression of adjacent articular surface. Most common tibial plateau fracture pattern. Variable amount of depression.',
+                energyLevel: 'Moderate',
+                prognosis: 'Good-Excellent',
+                treatments: [
+                    'Depression <3mm, stable: Conservative management possible',
+                    'Depression >3mm or unstable: ORIF with elevation, bone grafting, and buttress plating',
+                    'Arthroscopic-assisted reduction may be beneficial',
+                    'Subchondral support with bone graft or substitute essential'
+                ],
+                considerations: 'Most common type (25-30%). CT scan recommended for surgical planning. Assess articular step-off carefully. May need bone graft/substitute for depression. Consider ligament injuries. Meniscal pathology common.',
+                alert: true,
+                alertTitle: 'Surgical Planning Note',
+                alertContent: 'CT scan highly recommended for accurate assessment of depression depth and fragment size. Consider arthroscopic assistance for articular surface evaluation and reduction confirmation.'
+            },
+            '3': {
+                type: 'Type III',
+                name: 'Pure Depression Fracture',
+                characteristics: 'Central or lateral articular depression without peripheral split. Cortical rim remains intact. Typically occurs in older patients with osteoporotic bone.',
+                energyLevel: 'Low-Moderate',
+                prognosis: 'Good',
+                treatments: [
+                    'Depression <2-3mm: Non-operative with protected weight-bearing',
+                    'Depression >3mm: Elevation through cortical window, bone grafting, and possible plate fixation',
+                    'Balloon tibioplasty or calcium phosphate cement as alternative',
+                    'Less invasive techniques preferred in elderly'
+                ],
+                considerations: 'Common in older patients with osteoporosis. Intact cortical rim provides some stability. Bone graft/substitute often needed due to metaphyseal void. Consider medical optimization of bone health. May use cement augmentation in poor bone quality.',
+                alert: false
+            },
+            '4': {
+                type: 'Type IV',
+                name: 'Medial Plateau Fracture',
+                characteristics: 'Medial tibial condyle fracture, may be split or depression. Often high-energy injury. Commonly associated with ligamentous injuries and neurovascular complications.',
+                energyLevel: 'High',
+                prognosis: 'Fair-Good',
+                treatments: [
+                    'Almost always requires surgical fixation due to weight-bearing axis',
+                    'ORIF via medial or posteromedial approach',
+                    'Plate fixation with or without lag screws',
+                    'Protected weight-bearing for 10-12 weeks minimum'
+                ],
+                considerations: 'HIGH RISK for compartment syndrome. Check neurovascular status (peroneal nerve). Assess for ACL/PCL/MCL injuries. May require two-incision approach. Consider spanning external fixation if soft tissue compromised. Worse prognosis than lateral plateau injuries.',
+                alert: true,
+                alertTitle: '⚠️ High Complication Risk',
+                alertContent: 'Monitor closely for compartment syndrome. Assess peroneal nerve function. High association with ligament injuries (especially PCL). Consider vascular injury if high-energy mechanism. May need staged reconstruction.'
+            },
+            '5': {
+                type: 'Type V',
+                name: 'Bicondylar Fracture',
+                characteristics: 'Both medial and lateral plateaus involved. Metaphysis typically intact maintaining some stability. High-energy injury pattern. Significant soft tissue injury common.',
+                energyLevel: 'High',
+                prognosis: 'Fair',
+                treatments: [
+                    'Dual-plating approach: medial and lateral plates',
+                    'Consider external fixation first if soft tissue compromised',
+                    'Staged protocol: External fixation → Definitive ORIF when swelling resolved (7-14 days)',
+                    'Hybrid fixation (plates + external fixation) alternative',
+                    'Extended protected weight-bearing (12+ weeks)'
+                ],
+                considerations: 'High-energy trauma - assess for other injuries. Significant soft tissue injury typical. Risk of compartment syndrome high. May need staged treatment. Dual-plating standard but consider minimally invasive techniques. Prolonged rehabilitation. Higher rate of post-traumatic arthritis.',
+                alert: true,
+                alertTitle: 'Complex Injury - Staged Approach',
+                alertContent: 'Consider spanning external fixation initially if severe soft tissue injury. Definitive fixation after soft tissue recovery (7-14 days). High risk of compartment syndrome and infection. Multidisciplinary approach recommended.'
+            },
+            '6': {
+                type: 'Type VI',
+                name: 'Metaphyseal-Diaphyseal Dissociation',
+                characteristics: 'Bicondylar plateau fracture with metaphyseal-diaphyseal separation. Most severe tibial plateau injury. Often associated with neurovascular compromise and compartment syndrome.',
+                energyLevel: 'Very High',
+                prognosis: 'Guarded',
+                treatments: [
+                    'Initial: Spanning external fixation + compartment release if indicated',
+                    'Definitive: Dual-plate fixation OR ring fixator',
+                    'Staged approach mandatory - allow soft tissue recovery',
+                    'Consider intramedullary nail + periarticular plates',
+                    'Prolonged non-weight bearing (12-16 weeks)'
+                ],
+                considerations: 'SEVERE INJURY. Immediate compartment syndrome risk. Assess neurovascular status urgently. Almost always requires staged treatment. High infection risk. Consider damage control orthopedics principles. Expect prolonged disability and high post-traumatic arthritis rate. Early PT/OT consult for functional planning.',
+                alert: true,
+                alertTitle: '🚨 CRITICAL INJURY',
+                alertContent: 'EMERGENT assessment for compartment syndrome and neurovascular injury required. Damage control approach: initial external fixation, delayed definitive surgery. High complication rate. Consider transfer to Level 1 trauma center. Multidisciplinary team essential.'
+            }
+        };
+        
+        const form = document.getElementById('schatzkerForm');
+        const resultSection = document.getElementById('resultSection');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            classifyFracture();
+        });
+        
+        function classifyFracture() {
+            const selectedType = document.querySelector('input[name="type"]:checked').value;
+            const data = classifications[selectedType];
+            
+            // Update display
+            document.getElementById('resultType').textContent = data.type;
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('characteristics').textContent = data.characteristics;
+            document.getElementById('energyLevel').textContent = data.energyLevel;
+            document.getElementById('prognosis').textContent = data.prognosis;
+            document.getElementById('considerations').textContent = data.considerations;
+            
+            // Populate treatment list
+            const treatmentList = document.getElementById('treatmentList');
+            treatmentList.innerHTML = data.treatments.map(treatment => 
+                `<div class="treatment-item">${treatment}</div>`
+            ).join('');
+            
+            // Show/hide alert
+            const alertBox = document.getElementById('alertBox');
+            if (data.alert) {
+                document.getElementById('alertTitle').textContent = data.alertTitle;
+                document.getElementById('alertContent').textContent = data.alertContent;
+                alertBox.classList.remove('hidden');
+            } else {
+                alertBox.classList.add('hidden');
+            }
+            
+            // Show results
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetForm() {
+            form.reset();
+            resultSection.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

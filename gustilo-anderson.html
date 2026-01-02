@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gustilo-Anderson Classification - Open Fracture Assessment">
+    <meta name="theme-color" content="#dc2626">
+    <title>Gustilo-Anderson Calculator</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkd1c3RpbG8tQW5kZXJzb24gQ2xhc3NpZmljYXRpb24iLAogICJzaG9ydF9uYW1lIjogIkd1c3RpbG8tQSIsCiAgImRlc2NyaXB0aW9uIjogIk9wZW4gRnJhY3R1cmUgQ2xhc3NpZmljYXRpb24gU3lzdGVtIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjZGMyNjI2IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxOTInIGhlaWdodD0nMTkyJyB2aWV3Qm94PScwIDAgMTkyIDE5MiclM0UlM0NyZWN0IHdpZHRoPScxOTInIGhlaWdodD0nMTkyJyBmaWxsPSclMjNkYzI2MjYnLyUzRSUzQ3RleHQgeD0nNTAlMjUnIHk9JzUwJTI1JyBmb250LXNpemU9JzY0JyBmaWxsPSclMjNmZmZmZmYnIGZvbnQtZmFtaWx5PScnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFRyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyB2aWV3Qm94PScwIDAgNTEyIDUxMiclM0UlM0NyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyBmaWxsPSclMjNkYzI2MjYnLyUzRSUzQ3RleHQgeD0nNTAlMjUnIHk9JzUwJTI1JyBmb250LXNpemU9JzI1NicgZmlsbD0nJTIzZmZmZmZmJyBmb250LWZhbWlseT0nJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyUzRUclM0MvdGV4dCUzRSUzQy9zdmclM0U="
+    }
+  ]
+}">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #dc2626;
+            --primary-dark: #991b1b;
+            --primary-light: #ef4444;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(220, 38, 38, 0.02);
+        }
+        
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"]:checked + .radio-content {
+            color: var(--primary);
+        }
+        
+        .radio-option input[type="radio"]:checked ~ .type-badge {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .radio-content {
+            flex: 1;
+            padding-left: 0.75rem;
+            transition: color 0.2s ease;
+        }
+        
+        .radio-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.0625rem;
+        }
+        
+        .radio-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .radio-features {
+            margin-top: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+        
+        .radio-features li {
+            margin-left: 1.25rem;
+            margin-top: 0.25rem;
+        }
+        
+        .type-badge {
+            background: var(--bg-primary);
+            color: var(--primary);
+            padding: 0.375rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .calculate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .result-type {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-section-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        
+        .result-content {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .result-list {
+            margin-top: 0.75rem;
+        }
+        
+        .result-list li {
+            margin-left: 1.25rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+        }
+        
+        .alert-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: white;
+            color: var(--text-primary);
+            padding: 0.875rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reference {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(220, 38, 38, 0.05);
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .severity-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(220, 38, 38, 0.05);
+            border-radius: 8px;
+        }
+        
+        .severity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .severity-low .severity-dot { background: #10b981; }
+        .severity-moderate .severity-dot { background: #f59e0b; }
+        .severity-high .severity-dot { background: #dc2626; }
+        .severity-critical .severity-dot { background: #7c2d12; }
+        
+        .severity-text {
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gustilo-Anderson</h1>
+            <p>Open Fracture Classification System</p>
+        </div>
+        
+        <form id="gustiloForm">
+            <div class="card">
+                <div class="section-title">
+                    Select the classification that best describes the open fracture:
+                </div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="1" required>
+                        <div class="radio-content">
+                            <span class="radio-label">Type I</span>
+                            <span class="radio-description">Clean wound, wound length &lt;1 cm, minimal soft tissue damage, simple fracture pattern</span>
+                            <ul class="radio-features">
+                                <li>Low-energy injury</li>
+                                <li>Minimal contamination</li>
+                                <li>Puncture wound from inside-out</li>
+                            </ul>
+                        </div>
+                        <span class="type-badge">I</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="2">
+                        <div class="radio-content">
+                            <span class="radio-label">Type II</span>
+                            <span class="radio-description">Wound length &gt;1 cm, moderate soft tissue damage, minimal periosteal stripping</span>
+                            <ul class="radio-features">
+                                <li>Moderate-energy injury</li>
+                                <li>No extensive soft tissue crushing</li>
+                                <li>Adequate soft tissue coverage</li>
+                            </ul>
+                        </div>
+                        <span class="type-badge">II</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="3a">
+                        <div class="radio-content">
+                            <span class="radio-label">Type IIIA</span>
+                            <span class="radio-description">Extensive soft tissue damage, but adequate soft tissue coverage of bone despite laceration or flaps</span>
+                            <ul class="radio-features">
+                                <li>High-energy injury</li>
+                                <li>Segmental/comminuted fracture</li>
+                                <li>No flap needed for coverage</li>
+                            </ul>
+                        </div>
+                        <span class="type-badge">IIIA</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="3b">
+                        <div class="radio-content">
+                            <span class="radio-label">Type IIIB</span>
+                            <span class="radio-description">Extensive soft tissue loss with periosteal stripping and bone exposure, massive contamination</span>
+                            <ul class="radio-features">
+                                <li>High-energy injury</li>
+                                <li>Requires flap coverage</li>
+                                <li>Significant bone exposure</li>
+                            </ul>
+                        </div>
+                        <span class="type-badge">IIIB</span>
+                    </label>
+                    
+                    <label class="radio-option">
+                        <input type="radio" name="type" value="3c">
+                        <div class="radio-content">
+                            <span class="radio-label">Type IIIC</span>
+                            <span class="radio-description">Open fracture with arterial injury requiring repair, regardless of degree of soft tissue injury</span>
+                            <ul class="radio-features">
+                                <li>Vascular injury present</li>
+                                <li>Limb-threatening</li>
+                                <li>Requires immediate vascular repair</li>
+                            </ul>
+                        </div>
+                        <span class="type-badge">IIIC</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="calculate-btn">Classify Injury</button>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-type" id="resultType">Type I</div>
+                    <div class="result-name" id="resultName">Low Energy Injury</div>
+                    <div class="result-subtitle">Gustilo-Anderson Classification</div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Management Priorities</div>
+                    <div class="result-content" id="management"></div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Antibiotic Protocol</div>
+                    <div class="result-content" id="antibiotics"></div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Expected Complications</div>
+                    <div class="result-content" id="complications"></div>
+                    <div class="severity-indicator" id="severityIndicator">
+                        <div class="severity-dot"></div>
+                        <span class="severity-text" id="severityText">Low infection risk</span>
+                    </div>
+                </div>
+                
+                <div id="alertBox" class="alert-box hidden">
+                    <div class="alert-title" id="alertTitle"></div>
+                    <div class="alert-content" id="alertContent"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="reset-btn" onclick="resetForm()">New Classification</button>
+        </div>
+        
+        <div class="reference">
+            <div class="reference-title">Reference</div>
+            Gustilo RB, Anderson JT. Prevention of infection in the treatment of one thousand and twenty-five open fractures of long bones: retrospective and prospective analyses. J Bone Joint Surg Am. 1976;58(4):453-458.
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // Classification data
+        const classifications = {
+            '1': {
+                type: 'Type I',
+                name: 'Low Energy Injury',
+                management: 'Irrigation and debridement in OR within 6 hours. Simple wound closure or delayed primary closure. Splinting or early internal fixation based on fracture pattern.',
+                antibiotics: 'Cefazolin 1-2g IV (or cefuroxime). Continue for 24-48 hours post-op. Consider single dose if timely debridement achieved.',
+                complications: 'Infection risk: 0-2%. Low risk of nonunion. Generally excellent prognosis with appropriate early management.',
+                severity: 'severity-low',
+                severityText: 'Low infection risk (0-2%)',
+                alert: false
+            },
+            '2': {
+                type: 'Type II',
+                name: 'Moderate Energy Injury',
+                management: 'Urgent irrigation and debridement (within 6-12 hours). More extensive debridement required. Delayed primary closure or wound VAC. Early skeletal stabilization preferred.',
+                antibiotics: 'Cefazolin 1-2g IV every 8 hours. Continue for 48-72 hours. Consider adding aminoglycoside if significant contamination.',
+                complications: 'Infection risk: 2-7%. Moderate risk of delayed union. Close monitoring for compartment syndrome. May require serial debridements.',
+                severity: 'severity-moderate',
+                severityText: 'Moderate infection risk (2-7%)',
+                alert: false
+            },
+            '3a': {
+                type: 'Type IIIA',
+                name: 'High Energy - Adequate Coverage',
+                management: 'Emergent debridement. Aggressive serial irrigation and debridement. External fixation or temporary stabilization. Definitive fixation after soft tissue stable (7-14 days). May need secondary procedures.',
+                antibiotics: 'Cefazolin PLUS Gentamicin (or fluoroquinolone). Continue for 72 hours minimum. Add Penicillin G if soil/farm contamination. Consider culture-directed therapy.',
+                complications: 'Infection risk: 10-25%. High risk of nonunion and malunion. Compartment syndrome common. May require bone grafting. Prolonged recovery expected.',
+                severity: 'severity-high',
+                severityText: 'High infection risk (10-25%)',
+                alert: true,
+                alertTitle: 'High-Energy Injury Alert',
+                alertContent: 'Consider early involvement of plastic surgery. Monitor closely for compartment syndrome. Serial debridements likely needed.'
+            },
+            '3b': {
+                type: 'Type IIIB',
+                name: 'High Energy - Inadequate Coverage',
+                management: 'Emergent debridement and stabilization. External fixation initially. Requires flap coverage within 7 days (rotational or free flap). Early plastic surgery consultation mandatory. Serial debridements until wound clean.',
+                antibiotics: 'Cefazolin PLUS Gentamicin (or Cipro) PLUS Penicillin G if contaminated. Minimum 72 hours, often longer. Adjust based on cultures. Consider Vancomycin if MRSA risk.',
+                complications: 'Infection risk: 25-50%. Very high nonunion risk. Osteomyelitis risk significant. Flap failure possible. Amputation risk 4-16%. Long rehabilitation.',
+                severity: 'severity-critical',
+                severityText: 'Very high infection risk (25-50%)',
+                alert: true,
+                alertTitle: 'Critical Injury - Multidisciplinary Approach',
+                alertContent: 'IMMEDIATE plastic surgery consultation required. Flap coverage within 72 hours optimal, 7 days maximum. Consider limb salvage vs amputation early.'
+            },
+            '3c': {
+                type: 'Type IIIC',
+                name: 'Vascular Injury Present',
+                management: 'LIFE/LIMB EMERGENCY. Immediate vascular surgery consultation. Vascular repair takes priority. Temporary shunt if needed. Skeletal stabilization to protect vascular repair. Fasciotomies prophylactic. Flap coverage as Type IIIB.',
+                antibiotics: 'Broad-spectrum: Vancomycin PLUS Piperacillin-Tazobactam (or Carbapenem). Add Gentamicin. Minimum 5-7 days. Aggressive culture-directed therapy. High infection risk.',
+                complications: 'Infection risk: 25-75%. Amputation risk 40-90% if >6hr warm ischemia. Thrombosis/graft failure. Reperfusion injury and multi-organ failure possible. Chronic pain and disability common.',
+                severity: 'severity-critical',
+                severityText: 'Critical - Limb threatening',
+                alert: true,
+                alertTitle: '⚠️ EMERGENT VASCULAR INJURY',
+                alertContent: 'IMMEDIATE vascular surgery + ortho trauma coordination required. Golden period: <6 hours warm ischemia. Consider primary amputation if >6-8 hours, crush injury, insensate foot, or MESS score >7.'
+            }
+        };
+        
+        const form = document.getElementById('gustiloForm');
+        const resultSection = document.getElementById('resultSection');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            classifyInjury();
+        });
+        
+        function classifyInjury() {
+            const selectedType = document.querySelector('input[name="type"]:checked').value;
+            const data = classifications[selectedType];
+            
+            // Update display
+            document.getElementById('resultType').textContent = data.type;
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('management').textContent = data.management;
+            document.getElementById('antibiotics').textContent = data.antibiotics;
+            document.getElementById('complications').textContent = data.complications;
+            
+            // Update severity indicator
+            const severityIndicator = document.getElementById('severityIndicator');
+            severityIndicator.className = 'severity-indicator ' + data.severity;
+            document.getElementById('severityText').textContent = data.severityText;
+            
+            // Show/hide alert
+            const alertBox = document.getElementById('alertBox');
+            if (data.alert) {
+                document.getElementById('alertTitle').textContent = data.alertTitle;
+                document.getElementById('alertContent').textContent = data.alertContent;
+                alertBox.classList.remove('hidden');
+            } else {
+                alertBox.classList.add('hidden');
+            }
+            
+            // Show results
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetForm() {
+            form.reset();
+            resultSection.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

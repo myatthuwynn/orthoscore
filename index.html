@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OrthoScore - Comprehensive Orthopedic and Trauma Scoring System">
+    <meta name="theme-color" content="#0f172a">
+    <title>OrthoScore - Clinical Decision Tools</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk9ydGhvU2NvcmUgLSBDbGluaWNhbCBEZWNpc2lvbiBUb29scyIsCiAgInNob3J0X25hbWUiOiAiT3J0aG9TY29yZSIsCiAgImRlc2NyaXB0aW9uIjogIkNvbXByZWhlbnNpdmUgT3J0aG9wYWVkaWMgYW5kIFRyYXVtYSBTY29yaW5nIFN5c3RlbXMiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiMwZjE3MmEiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIGZpbGw9JyUyMzBmMTcyYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyUyM2ZmZmZmZicgZm9udC1mYW1pbHk9JycgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZScgdGV4dC1hbmNob3I9J21pZGRsZSclM0VPJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyUyMzBmMTcyYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nMjU2JyBmaWxsPSclMjNmZmZmZmYnIGZvbnQtZmFtaWx5PScnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFTyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --accent: #0ea5e9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 0.9375rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-top: 1.25rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-icon {
+            font-size: 1rem;
+        }
+        
+        .card-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .score-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .score-card:active {
+            transform: translateY(0);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 1.0625rem;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .favorite-btn.active {
+            filter: grayscale(0);
+        }
+        
+        .card-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .meta-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        /* Color schemes matching individual calculators */
+        .card-tlics { border-left-color: #0e7490; }
+        .card-tlics .meta-badge { background: rgba(14, 116, 144, 0.1); color: #0e7490; }
+        
+        .card-gustilo { border-left-color: #dc2626; }
+        .card-gustilo .meta-badge { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+        
+        .card-schatzker { border-left-color: #7c3aed; }
+        .card-schatzker .meta-badge { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
+        
+        .card-kl { border-left-color: #059669; }
+        .card-kl .meta-badge { background: rgba(5, 150, 105, 0.1); color: #059669; }
+        
+        .card-asia { border-left-color: #1e40af; }
+        .card-asia .meta-badge { background: rgba(30, 64, 175, 0.1); color: #1e40af; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.3;
+        }
+        
+        .empty-text {
+            font-size: 0.9375rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+        }
+        
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--border);
+            margin: 0 auto 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OrthoScore</h1>
+            <p>Clinical Decision Support Tools</p>
+            
+            <div class="search-box">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search scoring systems..." />
+            </div>
+        </div>
+        
+        <!-- Favorites Section -->
+        <div id="favoritesSection">
+            <h2 class="section-title">
+                <span class="section-icon">⭐</span>
+                Favorites
+            </h2>
+            <div class="card-grid" id="favoritesGrid">
+                <div class="empty-state">
+                    <div class="empty-icon">⭐</div>
+                    <div class="empty-text">No favorites yet. Tap ⭐ to add.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Spine Section -->
+        <div id="spineSection">
+            <h2 class="section-title">
+                <span class="section-icon">🦴</span>
+                Spine
+            </h2>
+            <div class="card-grid">
+                <a href="tlics-calculator.html" class="score-card card-tlics" data-id="tlics">
+                    <div class="card-header">
+                        <div class="card-title">TLICS Score</div>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'tlics')">⭐</button>
+                    </div>
+                    <div class="card-description">
+                        Thoracolumbar Injury Classification and Severity Score
+                    </div>
+                    <div class="card-meta">
+                        <span class="meta-badge">Trauma</span>
+                        <span class="meta-badge">Surgical Decision</span>
+                    </div>
+                </a>
+                
+                <a href="asia-impairment-scale.html" class="score-card card-asia" data-id="asia">
+                    <div class="card-header">
+                        <div class="card-title">ASIA Impairment Scale</div>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'asia')">⭐</button>
+                    </div>
+                    <div class="card-description">
+                        Spinal cord injury classification and neurological assessment
+                    </div>
+                    <div class="card-meta">
+                        <span class="meta-badge">Neurological</span>
+                        <span class="meta-badge">Prognosis</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Lower Extremity Section -->
+        <div id="lowerExtremitySection">
+            <h2 class="section-title">
+                <span class="section-icon">🦵</span>
+                Lower Extremity
+            </h2>
+            <div class="card-grid">
+                <a href="schatzker-classification.html" class="score-card card-schatzker" data-id="schatzker">
+                    <div class="card-header">
+                        <div class="card-title">Schatzker Classification</div>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'schatzker')">⭐</button>
+                    </div>
+                    <div class="card-description">
+                        Tibial plateau fracture classification system
+                    </div>
+                    <div class="card-meta">
+                        <span class="meta-badge">Fracture</span>
+                        <span class="meta-badge">Knee</span>
+                    </div>
+                </a>
+                
+                <a href="kellgren-lawrence.html" class="score-card card-kl" data-id="kl">
+                    <div class="card-header">
+                        <div class="card-title">Kellgren-Lawrence Grade</div>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'kl')">⭐</button>
+                    </div>
+                    <div class="card-description">
+                        Knee osteoarthritis radiographic grading system
+                    </div>
+                    <div class="card-meta">
+                        <span class="meta-badge">Degenerative</span>
+                        <span class="meta-badge">Knee</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Open Fractures Section -->
+        <div id="openFracturesSection">
+            <h2 class="section-title">
+                <span class="section-icon">🚨</span>
+                Open Fractures
+            </h2>
+            <div class="card-grid">
+                <a href="gustilo-anderson.html" class="score-card card-gustilo" data-id="gustilo">
+                    <div class="card-header">
+                        <div class="card-title">Gustilo-Anderson</div>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'gustilo')">⭐</button>
+                    </div>
+                    <div class="card-description">
+                        Open fracture classification and management guide
+                    </div>
+                    <div class="card-meta">
+                        <span class="meta-badge">Trauma</span>
+                        <span class="meta-badge">Emergency</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- No Results -->
+        <div id="noResults" class="hidden">
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <div class="empty-text">No scoring systems found</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-divider"></div>
+            Evidence-based clinical decision support<br>
+            For professional medical use
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // Favorites management
+        function getFavorites() {
+            const favs = localStorage.getItem('orthoScoreFavorites');
+            return favs ? JSON.parse(favs) : [];
+        }
+        
+        function saveFavorites(favorites) {
+            localStorage.setItem('orthoScoreFavorites', JSON.stringify(favorites));
+        }
+        
+        function toggleFavorite(event, id) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            let favorites = getFavorites();
+            const index = favorites.indexOf(id);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(id);
+            }
+            
+            saveFavorites(favorites);
+            updateFavoritesUI();
+        }
+        
+        function updateFavoritesUI() {
+            const favorites = getFavorites();
+            
+            // Update star buttons
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                const card = btn.closest('.score-card');
+                const id = card.getAttribute('data-id');
+                btn.classList.toggle('active', favorites.includes(id));
+            });
+            
+            // Update favorites section
+            const favoritesGrid = document.getElementById('favoritesGrid');
+            const favoritesSection = document.getElementById('favoritesSection');
+            
+            if (favorites.length === 0) {
+                favoritesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⭐</div>
+                        <div class="empty-text">No favorites yet. Tap ⭐ to add.</div>
+                    </div>
+                `;
+            } else {
+                const favoriteCards = favorites.map(id => {
+                    const originalCard = document.querySelector(`[data-id="${id}"]`);
+                    if (originalCard) {
+                        return originalCard.outerHTML;
+                    }
+                    return '';
+                }).filter(Boolean).join('');
+                
+                favoritesGrid.innerHTML = favoriteCards;
+                
+                // Re-attach event listeners to cloned favorite buttons
+                favoritesGrid.querySelectorAll('.favorite-btn').forEach(btn => {
+                    const card = btn.closest('.score-card');
+                    const id = card.getAttribute('data-id');
+                    btn.onclick = (e) => toggleFavorite(e, id);
+                });
+            }
+        }
+        
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const sections = [
+            document.getElementById('favoritesSection'),
+            document.getElementById('spineSection'),
+            document.getElementById('lowerExtremitySection'),
+            document.getElementById('openFracturesSection')
+        ];
+        const noResults = document.getElementById('noResults');
+        
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query === '') {
+                // Show all sections
+                sections.forEach(section => section.classList.remove('hidden'));
+                noResults.classList.add('hidden');
+                return;
+            }
+            
+            let hasResults = false;
+            
+            sections.forEach(section => {
+                const cards = section.querySelectorAll('.score-card');
+                let sectionHasVisibleCards = false;
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const description = card.querySelector('.card-description').textContent.toLowerCase();
+                    const badges = Array.from(card.querySelectorAll('.meta-badge'))
+                        .map(b => b.textContent.toLowerCase())
+                        .join(' ');
+                    
+                    const matches = title.includes(query) || 
+                                  description.includes(query) || 
+                                  badges.includes(query);
+                    
+                    if (matches) {
+                        card.style.display = 'block';
+                        sectionHasVisibleCards = true;
+                        hasResults = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Hide section if no cards visible (except favorites which has special handling)
+                if (section.id === 'favoritesSection') {
+                    section.classList.toggle('hidden', !sectionHasVisibleCards);
+                } else {
+                    section.classList.toggle('hidden', !sectionHasVisibleCards);
+                }
+            });
+            
+            noResults.classList.toggle('hidden', hasResults);
+        });
+        
+        // Initialize
+        updateFavoritesUI();
+    </script>
+</body>
+</html>

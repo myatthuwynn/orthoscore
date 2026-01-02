@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ASIA Impairment Scale - Spinal Cord Injury Classification">
+    <meta name="theme-color" content="#1e40af">
+    <title>ASIA Impairment Scale</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFTSUEgSW1wYWlybWVudCBTY2FsZSIsCiAgInNob3J0X25hbWUiOiAiQVNJQSIsCiAgImRlc2NyaXB0aW9uIjogIlNwaW5hbCBDb3JkIEluanVyeSBDbGFzc2lmaWNhdGlvbiBhbmQgQXNzZXNzbWVudCIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzFlNDBhZiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgdmlld0JveD0nMCAwIDE5MiAxOTInJTNFJTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5MicgZmlsbD0nJTIzMWU0MGFmJy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1zaXplPSc2NCcgZmlsbD0nJTIzZmZmZmZmJyBmb250LWZhbWlseT0nJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyUzRUElM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgdmlld0JveD0nMCAwIDUxMiA1MTInJTNFJTNDcmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgZmlsbD0nJTIzMWU0MGFmJy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1zaXplPScyNTYnIGZpbGw9JyUyM2ZmZmZmZicgZm9udC1mYW1pbHk9JycgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZScgdGV4dC1hbmNob3I9J21pZGRsZSclM0VBJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #06b6d4;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --grade-a: #7c2d12;
+            --grade-b: #dc2626;
+            --grade-c: #f97316;
+            --grade-d: #eab308;
+            --grade-e: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .info-card {
+            background: rgba(30, 64, 175, 0.05);
+            border: 1px solid rgba(30, 64, 175, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .grade-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .grade-option {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .grade-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(30, 64, 175, 0.02);
+        }
+        
+        .grade-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .grade-option input[type="radio"]:checked {
+            & ~ .grade-header .grade-title {
+                color: var(--primary);
+            }
+        }
+        
+        .grade-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .grade-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: color 0.2s ease;
+        }
+        
+        .grade-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .badge-a { background: var(--grade-a); }
+        .badge-b { background: var(--grade-b); }
+        .badge-c { background: var(--grade-c); }
+        .badge-d { background: var(--grade-d); }
+        .badge-e { background: var(--grade-e); }
+        
+        .grade-description {
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        .grade-criteria {
+            padding: 0.875rem;
+            background: rgba(30, 64, 175, 0.03);
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .classify-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .classify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        }
+        
+        .classify-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(30, 64, 175, 0.1);
+        }
+        
+        .result-grade {
+            font-size: 4rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            color: white;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-section-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        
+        .result-content {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        
+        .info-box {
+            padding: 0.875rem;
+            border-radius: 8px;
+            background: rgba(30, 64, 175, 0.03);
+        }
+        
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-value {
+            font-weight: 700;
+            font-size: 0.9375rem;
+            color: var(--primary);
+        }
+        
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+        }
+        
+        .alert-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .management-list {
+            margin-top: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .management-item {
+            padding: 0.75rem;
+            background: rgba(30, 64, 175, 0.03);
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            font-size: 0.9375rem;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: white;
+            color: var(--text-primary);
+            padding: 0.875rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reference {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(30, 64, 175, 0.05);
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ASIA Impairment Scale</h1>
+            <p>American Spinal Injury Association Classification</p>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-title">Assessment Requirements</div>
+            Complete motor and sensory examination required. Test key muscle groups (C5-T1, L2-S1) and sensory dermatomes bilaterally. Document sacral sparing (S4-S5 sensation, deep anal pressure, voluntary anal contraction).
+        </div>
+        
+        <form id="asiaForm">
+            <div class="card">
+                <div class="section-title">
+                    Select ASIA grade based on clinical examination:
+                </div>
+                <div class="grade-grid">
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="A" required>
+                        <div class="grade-header">
+                            <div class="grade-title">ASIA A - Complete</div>
+                            <div class="grade-badge badge-a">A</div>
+                        </div>
+                        <div class="grade-description">
+                            Complete spinal cord injury: No motor or sensory function preserved in sacral segments S4-S5
+                        </div>
+                        <div class="grade-criteria">
+                            <strong>Criteria:</strong> No sensory or motor function in lowest sacral segments (S4-S5). No anal sensation, no voluntary anal contraction, no deep anal pressure.
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="B">
+                        <div class="grade-header">
+                            <div class="grade-title">ASIA B - Sensory Incomplete</div>
+                            <div class="grade-badge badge-b">B</div>
+                        </div>
+                        <div class="grade-description">
+                            Incomplete: Sensory but NOT motor function preserved below neurological level, including S4-S5 (sacral sparing)
+                        </div>
+                        <div class="grade-criteria">
+                            <strong>Criteria:</strong> Sensory function preserved at S4-S5 (deep anal pressure OR perianal sensation) AND/OR any sensory below neurological level. NO motor function more than 3 levels below motor level.
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="C">
+                        <div class="grade-header">
+                            <div class="grade-title">ASIA C - Motor Incomplete</div>
+                            <div class="grade-badge badge-c">C</div>
+                        </div>
+                        <div class="grade-description">
+                            Incomplete: Motor function preserved below neurological level, and MORE than half of key muscle functions have grade &lt;3
+                        </div>
+                        <div class="grade-criteria">
+                            <strong>Criteria:</strong> Motor function preserved at S4-S5 (voluntary anal contraction) OR motor function more than 3 levels below motor level, with >50% of key muscles below neurological level having grade <3/5.
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="D">
+                        <div class="grade-header">
+                            <div class="grade-title">ASIA D - Motor Incomplete</div>
+                            <div class="grade-badge badge-d">D</div>
+                        </div>
+                        <div class="grade-description">
+                            Incomplete: Motor function preserved below neurological level, and AT LEAST half of key muscle functions have grade ≥3
+                        </div>
+                        <div class="grade-criteria">
+                            <strong>Criteria:</strong> Motor function preserved at S4-S5 (voluntary anal contraction) OR motor function more than 3 levels below motor level, with ≥50% of key muscles below neurological level having grade ≥3/5.
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="E">
+                        <div class="grade-header">
+                            <div class="grade-title">ASIA E - Normal</div>
+                            <div class="grade-badge badge-e">E</div>
+                        </div>
+                        <div class="grade-description">
+                            Normal: Sensory and motor function are normal in all segments, and patient had prior documented deficit
+                        </div>
+                        <div class="grade-criteria">
+                            <strong>Criteria:</strong> All motor and sensory scores are normal (5/5 motor, 2/2 sensory in all testable dermatomes). Reserved for those with documented prior deficits who have recovered.
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="classify-btn">Classify Injury</button>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-grade" id="resultGrade">A</div>
+                    <div class="result-name" id="resultName">Complete Injury</div>
+                    <div class="result-subtitle">ASIA Impairment Scale</div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Clinical Significance</div>
+                    <div class="result-content" id="significance"></div>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">Recovery Potential</div>
+                            <div class="info-value" id="recoveryPotential">Poor</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Ambulation</div>
+                            <div class="info-value" id="ambulation">Wheelchair</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Acute Management Priorities</div>
+                    <div class="result-content" id="management"></div>
+                    <div class="management-list" id="managementList"></div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Rehabilitation & Prognosis</div>
+                    <div class="result-content" id="rehabilitation"></div>
+                </div>
+                
+                <div id="alertBox" class="alert-box hidden">
+                    <div class="alert-title" id="alertTitle"></div>
+                    <div class="alert-content" id="alertContent"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="reset-btn" onclick="resetForm()">New Assessment</button>
+        </div>
+        
+        <div class="reference">
+            <div class="reference-title">Reference</div>
+            American Spinal Injury Association (ASIA). International Standards for Neurological Classification of Spinal Cord Injury (ISNCSCI), revised 2019.
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // ASIA grade data
+        const asiaData = {
+            'A': {
+                name: 'Complete Injury',
+                color: 'var(--grade-a)',
+                significance: 'Complete spinal cord injury with no motor or sensory function preserved in sacral segments. Most severe classification with poorest prognosis. Lack of sacral sparing indicates complete cord disruption.',
+                recoveryPotential: 'Poor',
+                ambulation: 'Wheelchair',
+                management: 'Critical acute management required. Time-sensitive interventions may improve outcomes. Prevent secondary injury and complications.',
+                managementItems: [
+                    'Spinal precautions - maintain alignment, avoid hyperflexion/hyperextension',
+                    'Mean arterial pressure 85-90 mmHg for 7 days post-injury (improve cord perfusion)',
+                    'Consider high-dose methylprednisolone if <8hrs (controversial - discuss risks/benefits)',
+                    'Early surgical decompression if indicated (<24hrs may improve outcomes)',
+                    'DVT prophylaxis (mechanical + pharmacologic when safe)',
+                    'Gastric stress ulcer prophylaxis',
+                    'Neurogenic bowel/bladder program',
+                    'Early PT/OT consultation'
+                ],
+                rehabilitation: 'Poor prognosis for motor recovery. <5% will convert to incomplete injury. Focus on maximizing independence with assistive devices and adaptive strategies. Comprehensive SCI rehabilitation program essential. Address bowel/bladder management, pressure ulcer prevention, autonomic dysreflexia education, psychological support. Long-term wheelchair dependency expected.',
+                alert: true,
+                alertTitle: '⚠️ Critical Injury - Multidisciplinary Approach Required',
+                alertContent: 'Transfer to specialized SCI center strongly recommended. Requires coordinated care from neurosurgery, orthopedic spine, PM&R, nursing, PT, OT, psychology, social work. Early intervention within first 24-48 hours may influence outcomes.'
+            },
+            'B': {
+                name: 'Sensory Incomplete',
+                color: 'var(--grade-b)',
+                significance: 'Incomplete spinal cord injury with preserved sensation below the level of injury including sacral segments. Motor function remains absent below neurological level. Presence of sacral sparing indicates incomplete injury with better prognosis than ASIA A.',
+                recoveryPotential: 'Fair',
+                ambulation: 'Usually wheelchair',
+                management: 'Aggressive acute management to maximize recovery potential. Many principles similar to ASIA A but prognosis for improvement is better.',
+                managementItems: [
+                    'MAP goal 85-90 mmHg for 7 days (maintain cord perfusion)',
+                    'Early decompression if cord compression present (<24hrs optimal)',
+                    'Serial neurological examinations (q1-2h initially, then q4h)',
+                    'Monitor for autonomic dysreflexia',
+                    'DVT prophylaxis crucial - very high risk population',
+                    'Aggressive pulmonary toilet if cervical/high thoracic injury',
+                    'Bladder catheterization - intermittent preferred when stable',
+                    'Early mobilization when medically/surgically stable'
+                ],
+                rehabilitation: 'Moderate prognosis for motor recovery. Up to 50-60% will improve to ASIA C or D with intensive rehabilitation. Recovery patterns vary - may see return of sensation before motor function. Focus on maintaining ROM, preventing contractures, pressure ulcer prevention. Strong potential for functional gains with comprehensive SCI rehab program. Most will remain wheelchair-dependent for mobility.',
+                alert: true,
+                alertTitle: 'Incomplete Injury - Potential for Recovery',
+                alertContent: 'Sacral sparing indicates incomplete injury with recovery potential. Optimize acute management. Consider transfer to SCI center. Serial exams critical to detect neurological improvement or deterioration.'
+            },
+            'C': {
+                name: 'Motor Incomplete - Limited',
+                color: 'var(--grade-c)',
+                significance: 'Incomplete spinal cord injury with some motor function preserved below neurological level, but majority of key muscles remain weak (<3/5). Better prognosis than ASIA A or B due to preserved motor pathways.',
+                recoveryPotential: 'Good',
+                ambulation: 'Variable - assistive devices',
+                management: 'Acute management focused on preventing secondary injury and maximizing recovery potential through aggressive rehabilitation.',
+                managementItems: [
+                    'MAP goal 85-90 mmHg for 7 days',
+                    'Early surgical intervention if unstable or progressive deficit',
+                    'Frequent neuro checks - document improvements carefully',
+                    'Progressive mobilization as tolerated',
+                    'Aggressive PT/OT - capitalize on neuroplasticity',
+                    'DVT prophylaxis',
+                    'Bladder/bowel training program',
+                    'Begin functional electrical stimulation if available'
+                ],
+                rehabilitation: 'Good prognosis for functional improvement. Approximately 75% will improve to ASIA D. Many will achieve household ambulation with assistive devices (walker, crutches, braces). Intensive task-specific training important. Focus on strengthening preserved muscles, gait training, transfers, ADLs. May achieve bladder control. Require 3-6 months intensive inpatient rehabilitation followed by outpatient therapy.',
+                alert: false
+            },
+            'D': {
+                name: 'Motor Incomplete - Functional',
+                color: 'var(--grade-d)',
+                significance: 'Incomplete spinal cord injury with functional motor preservation below neurological level. At least half of key muscles have grade ≥3/5. Best prognosis of incomplete injuries for achieving independent ambulation.',
+                recoveryPotential: 'Excellent',
+                ambulation: 'Community ambulation likely',
+                management: 'Focus shifts more toward rehabilitation than acute medical management, though spinal stability and medical complications still require attention.',
+                managementItems: [
+                    'Maintain spinal precautions until cleared by spine surgery',
+                    'Early aggressive mobilization and gait training',
+                    'Strengthening exercises for weak muscle groups',
+                    'Balance and coordination training',
+                    'Functional task training',
+                    'Monitor for autonomic dysreflexia if injury above T6',
+                    'Bladder training - many achieve independence',
+                    'Plan for community reintegration'
+                ],
+                rehabilitation: 'Excellent prognosis for functional recovery. Over 90% will achieve community ambulation, many without assistive devices. Most regain bowel and bladder control. Focus on endurance training, fine motor skills, return to prior functional level. May return to work/school. Rehabilitation typically 1-3 months inpatient followed by outpatient therapy. Address any residual deficits (hand function, gait abnormalities, bladder issues).',
+                alert: false
+            },
+            'E': {
+                name: 'Normal Function',
+                color: 'var(--grade-e)',
+                significance: 'Full recovery of motor and sensory function. Reserved for patients who had documented spinal cord injury that has completely resolved. Indicates excellent neurological recovery.',
+                recoveryPotential: 'Complete',
+                ambulation: 'Independent',
+                management: 'Focus on addressing any residual issues and preventing recurrence. Ensure spinal stability has been achieved.',
+                managementItems: [
+                    'Confirm spinal stability - cleared by spine surgery',
+                    'Address any residual pain or discomfort',
+                    'Evaluate for any subtle deficits (proprioception, fine coordination)',
+                    'Spine precautions during healing phase if recent injury',
+                    'Return to activity protocol if athlete',
+                    'Psychological support - PTSD screening',
+                    'Long-term follow-up plan'
+                ],
+                rehabilitation: 'Complete recovery achieved. May have residual symptoms (pain, stiffness, subtle weakness) not captured by motor/sensory exam. Focus on return to previous level of function and activities. Some patients report persistent neuropathic pain despite normal exam. Physical therapy for deconditioning from acute injury period. Address psychosocial impact of injury and recovery. Most return to full activities without restrictions once cleared.',
+                alert: false
+            }
+        };
+        
+        const form = document.getElementById('asiaForm');
+        const resultSection = document.getElementById('resultSection');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            classifyInjury();
+        });
+        
+        function classifyInjury() {
+            const selectedGrade = document.querySelector('input[name="grade"]:checked').value;
+            const data = asiaData[selectedGrade];
+            
+            // Update display
+            const gradeElement = document.getElementById('resultGrade');
+            gradeElement.textContent = selectedGrade;
+            gradeElement.className = 'result-grade badge-' + selectedGrade.toLowerCase();
+            
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('significance').textContent = data.significance;
+            document.getElementById('recoveryPotential').textContent = data.recoveryPotential;
+            document.getElementById('ambulation').textContent = data.ambulation;
+            document.getElementById('management').textContent = data.management;
+            document.getElementById('rehabilitation').textContent = data.rehabilitation;
+            
+            // Populate management items
+            const managementList = document.getElementById('managementList');
+            managementList.innerHTML = data.managementItems.map(item => 
+                `<div class="management-item">${item}</div>`
+            ).join('');
+            
+            // Show/hide alert
+            const alertBox = document.getElementById('alertBox');
+            if (data.alert) {
+                document.getElementById('alertTitle').textContent = data.alertTitle;
+                document.getElementById('alertContent').textContent = data.alertContent;
+                alertBox.classList.remove('hidden');
+            } else {
+                alertBox.classList.add('hidden');
+            }
+            
+            // Show results
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetForm() {
+            form.reset();
+            resultSection.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

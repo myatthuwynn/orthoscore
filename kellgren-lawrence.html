@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kellgren-Lawrence Classification - Knee Osteoarthritis Grading">
+    <meta name="theme-color" content="#059669">
+    <title>Kellgren-Lawrence Grading</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIktlbGxncmVuLUxhd3JlbmNlIEdyYWRpbmciLAogICJzaG9ydF9uYW1lIjogIktMIEdyYWRlIiwKICAiZGVzY3JpcHRpb24iOiAiS25lZSBPc3Rlb2FydGhyaXRpcyBSYWRpb2dyYXBoaWMgR3JhZGluZyBTeXN0ZW0iLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiMwNTk2NjkiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIGZpbGw9JyUyMzA1OTY2OScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyUyM2ZmZmZmZicgZm9udC1mYW1pbHk9JycgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZScgdGV4dC1hbmNob3I9J21pZGRsZSclM0VLJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyUyMzA1OTY2OScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nMjU2JyBmaWxsPSclMjNmZmZmZmYnIGZvbnQtZmFtaWx5PScnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFSyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #10b981;
+            --accent: #0891b2;
+            --warning: #f59e0b;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --grade-0: #10b981;
+            --grade-1: #84cc16;
+            --grade-2: #eab308;
+            --grade-3: #f97316;
+            --grade-4: #dc2626;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 0 0 24px 24px;
+            margin: -1rem -1rem 1.5rem -1rem;
+            box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .grade-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .grade-option {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .grade-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(5, 150, 105, 0.02);
+        }
+        
+        .grade-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .grade-option input[type="radio"]:checked {
+            & ~ .grade-header {
+                color: var(--primary);
+            }
+            & ~ .grade-badge {
+                color: white;
+            }
+        }
+        
+        .grade-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s ease;
+        }
+        
+        .grade-title {
+            font-weight: 600;
+            font-size: 1.0625rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .severity-label {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .severity-none { background: rgba(16, 185, 129, 0.15); color: var(--grade-0); }
+        .severity-doubtful { background: rgba(132, 204, 22, 0.15); color: var(--grade-1); }
+        .severity-minimal { background: rgba(234, 179, 8, 0.15); color: var(--grade-2); }
+        .severity-moderate { background: rgba(249, 115, 22, 0.15); color: var(--grade-3); }
+        .severity-severe { background: rgba(220, 38, 38, 0.15); color: var(--grade-4); }
+        
+        .grade-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .badge-0 { background: var(--grade-0); }
+        .badge-1 { background: var(--grade-1); }
+        .badge-2 { background: var(--grade-2); }
+        .badge-3 { background: var(--grade-3); }
+        .badge-4 { background: var(--grade-4); }
+        
+        .grade-description {
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+        
+        .grade-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+        
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(5, 150, 105, 0.1);
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.625rem;
+            color: var(--primary);
+        }
+        
+        .classify-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .classify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+        
+        .classify-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(5, 150, 105, 0.1);
+        }
+        
+        .result-grade {
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-section-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        
+        .result-content {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .treatment-options {
+            margin-top: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .treatment-item {
+            padding: 0.75rem;
+            background: rgba(5, 150, 105, 0.03);
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            font-size: 0.9375rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        
+        .info-box {
+            padding: 0.875rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-value {
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: white;
+            color: var(--text-primary);
+            padding: 0.875rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .reference {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(5, 150, 105, 0.05);
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .reference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kellgren-Lawrence Grade</h1>
+            <p>Knee Osteoarthritis Radiographic Classification</p>
+        </div>
+        
+        <form id="klForm">
+            <div class="card">
+                <div class="section-title">
+                    Select grade based on standing AP knee radiograph:
+                </div>
+                <div class="grade-grid">
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="0" required>
+                        <div class="grade-header">
+                            <div class="grade-title">
+                                Grade 0
+                                <span class="severity-label severity-none">None</span>
+                            </div>
+                            <div class="grade-badge badge-0">0</div>
+                        </div>
+                        <div class="grade-description">
+                            No radiographic features of osteoarthritis
+                        </div>
+                        <div class="grade-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>Normal joint space</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>No osteophytes</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>No sclerosis or cysts</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="1">
+                        <div class="grade-header">
+                            <div class="grade-title">
+                                Grade 1
+                                <span class="severity-label severity-doubtful">Doubtful</span>
+                            </div>
+                            <div class="grade-badge badge-1">1</div>
+                        </div>
+                        <div class="grade-description">
+                            Doubtful joint space narrowing and possible osteophytic lipping
+                        </div>
+                        <div class="grade-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Questionable osteophytes at joint margins</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Joint space may appear normal or minimally narrowed</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>No definitive OA changes</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="2">
+                        <div class="grade-header">
+                            <div class="grade-title">
+                                Grade 2
+                                <span class="severity-label severity-minimal">Minimal</span>
+                            </div>
+                            <div class="grade-badge badge-2">2</div>
+                        </div>
+                        <div class="grade-description">
+                            Definite osteophytes and possible joint space narrowing
+                        </div>
+                        <div class="grade-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Definite osteophytes present</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Possible joint space narrowing</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Mild sclerosis may be present</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="3">
+                        <div class="grade-header">
+                            <div class="grade-title">
+                                Grade 3
+                                <span class="severity-label severity-moderate">Moderate</span>
+                            </div>
+                            <div class="grade-badge badge-3">3</div>
+                        </div>
+                        <div class="grade-description">
+                            Multiple osteophytes, definite joint space narrowing, sclerosis, possible deformity
+                        </div>
+                        <div class="grade-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Multiple moderate osteophytes</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Definite narrowing of joint space (>50% loss)</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Subchondral sclerosis and possible bone deformity</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="grade-option">
+                        <input type="radio" name="grade" value="4">
+                        <div class="grade-header">
+                            <div class="grade-title">
+                                Grade 4
+                                <span class="severity-label severity-severe">Severe</span>
+                            </div>
+                            <div class="grade-badge badge-4">4</div>
+                        </div>
+                        <div class="grade-description">
+                            Large osteophytes, marked joint space narrowing, severe sclerosis, definite deformity
+                        </div>
+                        <div class="grade-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Large osteophytes throughout joint</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Marked narrowing or bone-on-bone contact</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">•</span>
+                                <span>Severe sclerosis, cysts, and definite bony deformity</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="classify-btn">Grade Osteoarthritis</button>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-grade" id="resultGrade">Grade 2</div>
+                    <div class="result-name" id="resultName">Minimal Osteoarthritis</div>
+                    <div class="result-subtitle">Kellgren-Lawrence Classification</div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Clinical Significance</div>
+                    <div class="result-content" id="significance"></div>
+                    <div class="info-grid">
+                        <div class="info-box" id="progressionBox">
+                            <div class="info-label">Progression Risk</div>
+                            <div class="info-value" id="progressionRisk">Low</div>
+                        </div>
+                        <div class="info-box" id="surgeryBox">
+                            <div class="info-label">Surgery Need</div>
+                            <div class="info-value" id="surgeryNeed">Unlikely</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Management Approach</div>
+                    <div class="result-content" id="management"></div>
+                    <div class="treatment-options" id="treatmentOptions"></div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-section-title">Clinical Recommendations</div>
+                    <div class="result-content" id="recommendations"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="reset-btn" onclick="resetForm()">New Assessment</button>
+        </div>
+        
+        <div class="reference">
+            <div class="reference-title">Reference</div>
+            Kellgren JH, Lawrence JS. Radiological assessment of osteo-arthrosis. Ann Rheum Dis. 1957;16(4):494-502.
+        </div>
+    </div>
+    
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KS50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        // Grade data
+        const gradeData = {
+            '0': {
+                name: 'No Osteoarthritis',
+                color: 'var(--grade-0)',
+                significance: 'Normal knee joint. No radiographic evidence of degenerative changes. However, radiographic findings do not always correlate with symptoms - patient may still have early cartilage changes not visible on X-ray.',
+                progressionRisk: 'Minimal',
+                surgeryNeed: 'Not indicated',
+                management: 'Preventive strategies and health maintenance are appropriate. Focus on modifiable risk factors and general joint health.',
+                treatments: [
+                    'Maintain healthy body weight (BMI <25)',
+                    'Regular low-impact exercise (walking, swimming, cycling)',
+                    'Quadriceps strengthening exercises',
+                    'Consider activity modification if high-impact sports'
+                ],
+                recommendations: 'Encourage preventive measures. No specific OA treatment needed. If symptomatic despite Grade 0 findings, consider MRI to evaluate for meniscal pathology, ligament injury, or early cartilage loss. Routine follow-up not necessary unless symptoms develop.'
+            },
+            '1': {
+                name: 'Doubtful Osteoarthritis',
+                color: 'var(--grade-1)',
+                significance: 'Questionable radiographic changes. May represent very early OA or normal anatomic variation. Clinical correlation essential - symptoms may not correlate with radiographic findings at this stage.',
+                progressionRisk: 'Low',
+                surgeryNeed: 'Not indicated',
+                management: 'Conservative management with focus on symptom control and progression prevention. Most patients remain stable or progress slowly.',
+                treatments: [
+                    'Weight management and BMI optimization',
+                    'Physical therapy focusing on quadriceps strength',
+                    'NSAIDs as needed for symptomatic relief',
+                    'Activity modification - avoid high-impact activities',
+                    'Consider viscosupplementation if symptomatic'
+                ],
+                recommendations: 'Emphasize non-pharmacologic interventions. Monitor symptoms clinically. Repeat imaging only if clinical deterioration occurs. Patient education on self-management strategies. Consider referral to physical therapy for structured exercise program.'
+            },
+            '2': {
+                name: 'Minimal Osteoarthritis',
+                color: 'var(--grade-2)',
+                significance: 'Definite early OA changes present. This is the earliest stage where OA can be confidently diagnosed radiographically. Most patients are still functional with conservative management.',
+                progressionRisk: 'Moderate',
+                surgeryNeed: 'Unlikely',
+                management: 'Multimodal conservative approach. Focus on maintaining function and delaying progression. Surgery rarely indicated at this stage.',
+                treatments: [
+                    'Structured physical therapy and home exercise program',
+                    'Weight loss if BMI >25 (each kg lost reduces knee load by 4kg)',
+                    'NSAIDs or acetaminophen for pain management',
+                    'Intra-articular corticosteroid injections for flares',
+                    'Viscosupplementation (hyaluronic acid) may provide benefit',
+                    'Knee brace or unloader brace if unicompartmental disease'
+                ],
+                recommendations: 'Optimize conservative management. Consider formal PT referral. Educate on disease trajectory and importance of weight management. NSAIDs should be used at lowest effective dose. Consider referral to orthopedics if symptoms refractory to 3-6 months conservative management.'
+            },
+            '3': {
+                name: 'Moderate Osteoarthritis',
+                color: 'var(--grade-3)',
+                significance: 'Established moderate OA with definite structural changes. Symptoms typically correlate with radiographic findings. Conservative management still first-line, but some patients may eventually require surgical intervention.',
+                progressionRisk: 'High',
+                surgeryNeed: 'Possible',
+                management: 'Aggressive conservative management while monitoring for progression. Begin discussing surgical options with appropriate candidates who fail conservative care.',
+                treatments: [
+                    'Comprehensive physical therapy - strengthening and ROM',
+                    'Weight management crucial (target BMI <25)',
+                    'Regular NSAIDs with gastroprotection if needed',
+                    'Intra-articular corticosteroid injections (limit to 3-4 per year)',
+                    'Viscosupplementation trial if not previously attempted',
+                    'Walking aids (cane in contralateral hand)',
+                    'Consider knee bracing (unloader for unicompartmental)',
+                    'PRP injections - emerging evidence'
+                ],
+                recommendations: 'Orthopedic referral recommended for surgical evaluation and discussion. Many patients can delay surgery with optimal conservative management. For younger patients (<60), consider joint preservation procedures (HTO, partial knee replacement). For older patients (>60), total knee replacement is definitive treatment if conservative measures fail. Set realistic expectations regarding symptom improvement with non-surgical management.'
+            },
+            '4': {
+                name: 'Severe Osteoarthritis',
+                color: 'var(--grade-4)',
+                significance: 'Advanced end-stage OA with severe structural damage. Significant functional impairment expected. Conservative management provides limited benefit at this stage. Most patients are candidates for arthroplasty.',
+                progressionRisk: 'End-stage',
+                surgeryNeed: 'Likely',
+                management: 'Bridge to surgery with symptom control. Focus on optimizing patient for eventual arthroplasty. Continue conservative measures for surgical candidates awaiting optimization or non-surgical candidates.',
+                treatments: [
+                    'Pain management - scheduled NSAIDs, consider opioid-sparing alternatives',
+                    'Intra-articular corticosteroid for temporary relief',
+                    'Physical therapy to maintain mobility pre-operatively',
+                    'Assistive devices (cane, walker) to maintain independence',
+                    'Weight optimization before surgery (BMI <40 preferred)',
+                    'Medical optimization - control diabetes, quit smoking'
+                ],
+                recommendations: 'ORTHOPEDIC REFERRAL INDICATED for total knee arthroplasty evaluation. Most patients achieve excellent outcomes with TKA. Pre-operative optimization crucial: BMI <40, HbA1c <8%, smoking cessation 6+ weeks prior. For non-surgical candidates: focus on quality of life, pain management, and maintaining function. Consider genicular nerve blocks/radiofrequency ablation for patients who are poor surgical candidates. Set realistic expectations - conservative management unlikely to provide substantial improvement at this stage.'
+            }
+        };
+        
+        const form = document.getElementById('klForm');
+        const resultSection = document.getElementById('resultSection');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            assessGrade();
+        });
+        
+        function assessGrade() {
+            const selectedGrade = document.querySelector('input[name="grade"]:checked').value;
+            const data = gradeData[selectedGrade];
+            
+            // Update display
+            document.getElementById('resultGrade').textContent = 'Grade ' + selectedGrade;
+            document.getElementById('resultGrade').style.color = data.color;
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('significance').textContent = data.significance;
+            document.getElementById('progressionRisk').textContent = data.progressionRisk;
+            document.getElementById('surgeryNeed').textContent = data.surgeryNeed;
+            document.getElementById('management').textContent = data.management;
+            document.getElementById('recommendations').textContent = data.recommendations;
+            
+            // Color code info boxes
+            const progressionBox = document.getElementById('progressionBox');
+            const surgeryBox = document.getElementById('surgeryBox');
+            progressionBox.style.background = `${data.color}15`;
+            progressionBox.querySelector('.info-value').style.color = data.color;
+            surgeryBox.style.background = `${data.color}15`;
+            surgeryBox.querySelector('.info-value').style.color = data.color;
+            
+            // Populate treatment options
+            const treatmentList = document.getElementById('treatmentOptions');
+            treatmentList.innerHTML = data.treatments.map(treatment => 
+                `<div class="treatment-item">${treatment}</div>`
+            ).join('');
+            
+            // Show results
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetForm() {
+            form.reset();
+            resultSection.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
